@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
 import android.view.View
 import android.view.ViewAnimationUtils
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.TextView
@@ -22,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         val animationHide = AnimationUtils.loadAnimation(this, R.anim.hide);
         animationBounce.duration = 650
         animationHide.duration = 250
-        animationHide.setAnimationListener(object :Animation.AnimationListener{
+        animationHide.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(p0: Animation?) {
 
             }
@@ -36,7 +37,7 @@ class MainActivity : AppCompatActivity() {
 
             }
         })
-        animationBounce.setAnimationListener(object :Animation.AnimationListener{
+        animationBounce.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(p0: Animation?) {
             }
 
@@ -56,15 +57,36 @@ class MainActivity : AppCompatActivity() {
         val myView: View = findViewById(R.id.splash_screen)
         myView.post {
             val cx: Int = myView.measuredWidth / 2
+//            val cy: Int = myView.measuredHeight-(myView.width/2)
             val cy: Int = myView.measuredHeight-80
             val initialRadius: Int = myView.height
-            val anim = ViewAnimationUtils.createCircularReveal(myView, cx, cy, initialRadius.toFloat(), 0f)
-            anim.duration = 1000
+            val anim = ViewAnimationUtils.createCircularReveal(
+                myView,
+                cx,
+                cy,
+                initialRadius.toFloat(),
+                0f
+            )
+
+            anim.interpolator= AccelerateDecelerateInterpolator()
+            anim.duration = 500
             anim.addListener(object : AnimatorListenerAdapter() {
                 override fun onAnimationEnd(animation: Animator) {
                     super.onAnimationEnd(animation)
                     myView.visibility = View.INVISIBLE
+//                    val centerx: Int = cx
+//                    val centery: Int = myView.measuredHeight - 80
+//                    val initialRadiusNew: Int = myView.width / 2
+//                    val anim2 = ViewAnimationUtils.createCircularReveal(
+//                        myView,
+//                        centerx,
+//                        centery,
+//                        initialRadiusNew.toFloat(),
+//                        0f
+//                    )
+//                    anim2.start()
                 }
+
             })
             anim.start()
         }
